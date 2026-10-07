@@ -6,20 +6,64 @@
 
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; }
+button, input { font: inherit; }
 
 .page {
   min-height: 100vh;
-  padding: 34px 15px;
+  padding: 20px 15px 34px;
 }
 
 .card, .info {
   width: min(680px, 100%);
-  margin: 0 auto 24px;
+  margin: 0 auto 18px;
   background: white;
   border: 1px solid #e1e6ed;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 30px;
 }
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 18px;
+  position: sticky;
+  top: 10px;
+  z-index: 5;
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+
+.tabs {
+  display: flex;
+  gap: 7px;
+  background: #f3f5f8;
+  padding: 4px;
+  border-radius: 9px;
+}
+
+.tab {
+  border: 0;
+  background: transparent;
+  color: #667085;
+  padding: 9px 14px;
+  border-radius: 7px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: white;
+  color: #182230;
+  box-shadow: 0 1px 4px rgba(16, 24, 40, .12);
+}
+
+.tool-card { margin-top: 18px; }
 
 h1 {
   text-align: center;
@@ -56,10 +100,14 @@ input:focus {
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
   border: 0;
   background: transparent;
+  color: #667085;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 28px;
+  line-height: 1;
 }
 
 .find {
@@ -70,7 +118,7 @@ input:focus {
   border-radius: 8px;
   background: #4295d2;
   color: white;
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 700;
   cursor: pointer;
 }
@@ -106,7 +154,7 @@ input:focus {
   border-radius: 8px;
 }
 
-.result { margin-top: 30px; text-align: center; }
+.result, .check-result { margin-top: 30px; text-align: center; }
 
 .avatar {
   display: block;
@@ -116,6 +164,13 @@ input:focus {
   border-radius: 10px;
   margin: 0 auto 28px;
   background: #eef2f6;
+}
+
+.avatar.small {
+  width: 140px;
+  height: 140px;
+  margin-bottom: 20px;
+  border-radius: 50%;
 }
 
 .success {
@@ -142,6 +197,7 @@ input:focus {
   background: #182230;
   color: white;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .meta {
@@ -152,13 +208,56 @@ input:focus {
   gap: 4px;
 }
 
+.status-box {
+  border-radius: 10px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  border: 1px solid transparent;
+}
+
+.status-box strong { font-size: 24px; }
+.status-box span { line-height: 1.5; }
+
+.check-success { background: #eaf9ee; border-color: #b7e8c3; color: #16733a; }
+.check-warning { background: #fff8df; border-color: #f0d98a; color: #8a6500; }
+.check-danger { background: #fff0f0; border-color: #f4c0c0; color: #b42318; }
+.check-error { background: #fff4e8; border-color: #f1c58c; color: #9a4d00; }
+
+.check-details {
+  margin-top: 15px;
+  border: 1px solid #e1e6ed;
+  border-radius: 9px;
+  overflow: hidden;
+  text-align: left;
+}
+
+.check-details div {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 13px 15px;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.check-details div:last-child { border-bottom: 0; }
+.check-details span { color: #667085; }
+.check-details b { text-align: right; word-break: break-word; }
+
 .info h2 { margin-top: 0; }
 .info p { color: #344054; line-height: 1.65; font-size: 17px; }
 
 @media (max-width: 520px) {
-  .page { padding: 18px 10px; }
+  .page { padding: 10px 10px 24px; }
   .card, .info { padding: 22px 16px; }
+  .nav { padding: 10px; }
+  .brand { font-size: 18px; }
+  .tabs { flex: 1; }
+  .tab { flex: 1; padding: 9px 8px; }
   h1 { font-size: 26px; }
   label { font-size: 18px; }
   input { font-size: 16px; }
+  .check-details div { flex-direction: column; gap: 4px; }
+  .check-details b { text-align: left; }
 }

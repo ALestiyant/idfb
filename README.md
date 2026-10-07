@@ -1,53 +1,48 @@
-# Facebook ID Finder — Apify V1
+# IDFB — Facebook ID Finder + FB Check
 
-Versi ini memakai Apify Actor:
+Versi ini menambahkan menu **FB Check** ke project Facebook ID Finder.
 
-axiomworks~facebook-id-finder
+## Fitur
 
-Actor tersebut menerima input:
-{
-  "urls": ["https://www.facebook.com/nasa"],
-  "maxItems": 1
-}
+### ID Finder
+Masukkan URL Facebook publik untuk mendapatkan numeric Facebook ID.
 
-dan mengembalikan data seperti:
-{
-  "id": "100044561550831",
-  "type": "page",
-  "name": "NASA - National Aeronautics and Space Administration",
-  "vanity": "NASA",
-  "imageUrl": "...",
-  "status": "ok"
-}
+### FB Check
+Masukkan numeric Facebook ID. Sistem akan memeriksa URL:
 
-## Vercel
+`https://www.facebook.com/profile.php?id=ID`
 
-Environment Variable yang wajib:
+melalui Apify Actor `axiomworks~facebook-id-finder`.
 
-APIFY_API_TOKEN
+Status yang ditampilkan:
 
-Masukkan API token Apify Anda di:
-Vercel > Project > Settings > Environment Variables
+- **FOUND** — ID dapat ditemukan dan diakses secara publik.
+- **NOT FOUND** — ID tidak ditemukan atau tidak dapat diakses.
+- **RESTRICTED** — Facebook meminta login atau membatasi akses, sehingga belum dapat diverifikasi.
+- **CHECK FAILED** — pemeriksaan gagal.
 
-Jangan memasukkan token ke src/main.jsx.
+> FOUND tidak berarti pemilik akun sedang online. RESTRICTED juga tidak otomatis berarti akun sudah mati/dihapus.
 
-## Apify
+## Environment Variable Vercel
 
-Actor page:
-https://apify.com/axiomworks/facebook-id-finder
+Wajib tetap menggunakan:
 
-Apify API docs:
-https://docs.apify.com/api/v2
+`APIFY_API_TOKEN`
 
-Endpoint yang dipakai:
-POST https://api.apify.com/v2/actors/axiomworks~facebook-id-finder/run-sync-get-dataset-items
+Token dimasukkan di Vercel → Project → Settings → Environment Variables.
+Jangan memasukkan token ke file frontend.
+
+## API endpoint
+
+- `/api/find` — URL Facebook → ID
+- `/api/check` — Facebook ID → status publik
+
+Apify endpoint:
+
+`POST https://api.apify.com/v2/actors/axiomworks~facebook-id-finder/run-sync-get-dataset-items`
 
 ## Deploy
 
-Build command:
-npm run build
+Build command: `npm run build`
 
-Output directory:
-dist
-
-Tidak perlu GitHub untuk deployment pertama jika menggunakan Vercel Drop.
+Output directory: `dist`
