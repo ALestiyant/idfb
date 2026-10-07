@@ -1,28 +1,18 @@
-# Facebook ID Finder
+# Facebook ID Finder v3
 
-Versi sederhana untuk Vercel. Struktur resolver mengikuti pendekatan open-source
-`refatbd/info-facebook-user` (MIT), tetapi UI dan endpoint dibuat ulang untuk proyek ini.
+Tool sederhana untuk mencoba menemukan Facebook Numeric ID dari URL atau username menggunakan metadata publik yang dapat diakses tanpa login.
 
-## File
-- index.html
-- api/facebook.js
-- vercel.json
-- package.json
+## Deploy ke Vercel
 
-## Deploy
-Upload seluruh file ke GitHub, lalu import repository ke Vercel.
-Tidak perlu Build Command dan tidak perlu Environment Variable.
+1. Upload folder ini ke repository GitHub.
+2. Import repository tersebut ke Vercel.
+3. Framework Preset: **Other** (atau biarkan Vercel mendeteksi sebagai static site).
+4. **Build Command:** kosongkan. Proyek ini tidak membutuhkan `npm run build`.
+5. **Output Directory:** kosongkan.
+6. Deploy.
 
-## Endpoint
-GET /facebook?input=USERNAME_OR_URL
+API tersedia melalui `/facebook?input=USERNAME` dan diarahkan ke `/api/facebook` oleh `vercel.json`.
 
-Contoh:
-`/facebook?input=putri.bhogell.777`
+## Catatan penting
 
-## Catatan
-Facebook dapat memblokir atau mengubah halaman publiknya. Resolver hanya mengembalikan
-ID jika ID tersebut benar-benar ditemukan pada response yang diterima server.
-Tidak ada ID yang ditebak.
-
-Referensi open-source:
-https://github.com/refatbd/info-facebook-user
+Facebook dapat memblokir request otomatis, mengarahkan ke login/checkpoint, atau tidak mengirim Numeric ID di halaman publik. Dalam kondisi tersebut aplikasi akan menampilkan alasan yang lebih jelas daripada `[object Object]`; aplikasi tidak melakukan login, bypass CAPTCHA, atau bypass pembatasan akses Facebook.

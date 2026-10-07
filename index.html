@@ -40,8 +40,13 @@ async function lookup(){
   btn.disabled=true;load.style.display='block';
   try{
     const r=await fetch('/facebook?input='+encodeURIComponent(input),{headers:{'Accept':'application/json'}});
-    const d=await r.json();
-    if(!r.ok||!d.success) throw new Error(d.error||'ID tidak ditemukan.');
+    const raw=await r.text();
+    let d;
+    try{d=JSON.parse(raw)}catch(_){throw new Error(`Server mengembalikan response tidak valid (HTTP ${r.status}).`)}
+    if(!r.ok||!d.success){
+      const message=typeof d.error==='string'?d.error:(d.error?JSON.stringify(d.error):'ID tidak ditemukan.');
+      throw new Error(message);
+    }
     const x=d.data||{};
     if(!x.fbid) throw new Error('Profil ditemukan, tetapi Facebook tidak memberikan ID numerik pada halaman yang dapat dibaca.');
     box.className='result show';
