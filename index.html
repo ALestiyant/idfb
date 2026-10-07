@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Facebook ID Finder</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(135deg,#eef4ff,#f8fbff);color:#172033;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{width:100%;max-width:560px;background:#fff;border-radius:24px;padding:30px;box-shadow:0 18px 55px rgba(31,61,114,.14)}
+.logo{width:64px;height:64px;border-radius:18px;background:#1877f2;color:#fff;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;margin-bottom:18px}
+h1{margin:0 0 8px;font-size:28px}p{color:#68738a;line-height:1.55;margin-top:0}
+label{display:block;font-weight:700;margin:24px 0 8px}
+.row{display:flex;gap:10px}.input{flex:1;border:1px solid #d9e0ec;border-radius:13px;padding:15px;font-size:15px;outline:none}.input:focus{border-color:#1877f2;box-shadow:0 0 0 3px rgba(24,119,242,.1)}
+button{border:0;border-radius:13px;background:#1877f2;color:#fff;font-weight:800;padding:0 20px;cursor:pointer;font-size:15px}button:disabled{opacity:.6;cursor:wait}
+.result{display:none;margin-top:22px;padding:20px;border-radius:16px;background:#f5f8fd}.result.ok{display:block}.result.error{display:block;background:#fff5f5;color:#a32929}
+.result-title{font-weight:800;margin-bottom:8px}.idbox{display:flex;align-items:center;gap:10px;margin-top:12px}.id{flex:1;background:#fff;border:1px solid #dce4f0;border-radius:12px;padding:14px;font-size:20px;font-weight:800;word-break:break-all}.copy{padding:12px 15px}
+.small{font-size:12px;color:#7b8496;margin-top:20px}
+.loading{display:none;margin-top:16px;color:#1877f2;font-weight:700}
+.examples{margin-top:18px;font-size:13px;color:#7b8496}.examples code{background:#f1f4f9;padding:3px 6px;border-radius:6px}
+@media(max-width:500px){.card{padding:22px}.row{flex-direction:column}button{height:52px}}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="logo">f</div>
+  <h1>Facebook ID Finder</h1>
+  <p>Masukkan URL profil Facebook untuk mencoba menemukan ID numeriknya.</p>
+
+  <label for="url">URL Facebook</label>
+  <div class="row">
+    <input id="url" class="input" type="url" autocomplete="off"
+      placeholder="https://www.facebook.com/username">
+    <button id="findBtn" onclick="findId()">Cari ID</button>
+  </div>
+
+  <div id="loading" class="loading">Mencari ID Facebook...</div>
+  <div id="result" class="result"></div>
+
+  <div class="examples">
+    Contoh: <code>facebook.com/username</code> atau
+    <code>facebook.com/profile.php?id=123...</code>
+  </div>
+
+  <div class="small">
+    Catatan: ID akun yang bisa dibaca bergantung pada akses dan perubahan sistem Facebook.
+  </div>
+</main>
+
+<script>
+async function findId(){
+  const input=document.getElementById('url').value.trim();
+  const btn=document.getElementById('findBtn');
+  const loading=document.getElementById('loading');
+  const result=document.getElementById('result');
+
+  result.className='result';
+  result.innerHTML='';
+  if(!input){showError('Silakan masukkan URL Facebook.');return}
+
+  btn.disabled=true; loading.style.display='block';
+  try{
+    const r=await fetch('/api/find?id='+encodeURIComponent(input));
+    const data=await r.json();
+    if(!r.ok || !data.success) throw new Error(data.message||'ID tidak ditemukan.');
+
+    result.className='result ok';
+    result.innerHTML=`
+      <div class="result-title">Facebook ID ditemukan</div>
+      <div class="idbox">
+        <div class="id" id="foundId">${escapeHtml(data.id)}</div>
+        <button class="copy" onclick="copyId()">Copy</button>
+      </div>
+      ${data.username?'<div class="small">Username: '+escapeHtml(data.username)+'</div>':''}
+    `;
+  }catch(e){showError(e.message)}
+  finally{btn.disabled=false;loading.style.display='none'}
+}
+function showError(msg){
+ const r=document.getElementById('result');
+ r.className='result error';
+ r.innerHTML='<div class="result-title">Tidak berhasil</div><div>'+escapeHtml(msg)+'</div>';
+}
+async function copyId(){
+ const id=document.getElementById('foundId').textContent;
+ try{await navigator.clipboard.writeText(id); alert('ID berhasil disalin.')}
+ catch(e){prompt('Salin ID berikut:',id)}
+}
+function escapeHtml(s){
+ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+document.getElementById('url').addEventListener('keydown',e=>{if(e.key==='Enter')findId()});
+</script>
+</body>
+</html>
