@@ -1,20 +1,53 @@
-# Facebook ID Finder v4
+# Facebook ID Finder — Apify V1
 
-Simple Vercel-ready static frontend + serverless API.
+Versi ini memakai Apify Actor:
 
-## Important limitation
+axiomworks~facebook-id-finder
 
-A username such as `facebook.com/namauser` does not reliably expose a numeric ID to an unauthenticated server. Facebook may return HTTP 400/403/429, a login wall, or HTML without the ID. This project does not log in to Facebook or bypass access controls.
+Actor tersebut menerima input:
+{
+  "urls": ["https://www.facebook.com/nasa"],
+  "maxItems": 1
+}
 
-The API tries the public `www`, `m`, and `mbasic` Facebook hosts and extracts an ID only when Facebook actually exposes one in public metadata. If the input already contains a numeric ID (`profile.php?id=...`, `/groups/123...`, or a raw number), it is returned directly without requesting Facebook.
+dan mengembalikan data seperti:
+{
+  "id": "100044561550831",
+  "type": "page",
+  "name": "NASA - National Aeronautics and Space Administration",
+  "vanity": "NASA",
+  "imageUrl": "...",
+  "status": "ok"
+}
 
-## Deploy to Vercel
+## Vercel
 
-1. Upload this folder to GitHub.
-2. Import the repository into Vercel.
-3. Framework preset: **Other**.
-4. Build command: leave empty.
-5. Output directory: leave empty.
-6. Deploy.
+Environment Variable yang wajib:
 
-No `npm install` or `npm run build` is required.
+APIFY_API_TOKEN
+
+Masukkan API token Apify Anda di:
+Vercel > Project > Settings > Environment Variables
+
+Jangan memasukkan token ke src/main.jsx.
+
+## Apify
+
+Actor page:
+https://apify.com/axiomworks/facebook-id-finder
+
+Apify API docs:
+https://docs.apify.com/api/v2
+
+Endpoint yang dipakai:
+POST https://api.apify.com/v2/actors/axiomworks~facebook-id-finder/run-sync-get-dataset-items
+
+## Deploy
+
+Build command:
+npm run build
+
+Output directory:
+dist
+
+Tidak perlu GitHub untuk deployment pertama jika menggunakan Vercel Drop.

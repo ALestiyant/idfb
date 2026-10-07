@@ -1,8 +1,7 @@
 {
-  "rewrites": [
-    {
-      "source": "/facebook",
-      "destination": "/api/facebook"
+  "functions": {
+    "api/find.js": {
+      "maxDuration": 60
     }
-  ]
+  }
 }

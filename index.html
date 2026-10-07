@@ -1,64 +1,13 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Facebook ID Finder</title>
-<style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:linear-gradient(135deg,#eef5ff,#f7f9fc);display:flex;align-items:center;justify-content:center;padding:20px;color:#172033}.card{width:100%;max-width:580px;background:#fff;border-radius:24px;padding:30px;box-shadow:0 20px 60px #173b6718}.brand{display:flex;align-items:center;gap:14px;margin-bottom:20px}.fb{width:56px;height:56px;border-radius:16px;background:#1877f2;color:white;font-size:38px;font-weight:bold;display:grid;place-items:center}.brand h1{font-size:25px;margin:0}.brand span{font-size:13px;color:#7a8496}.desc{color:#68738a;line-height:1.55}.label{display:block;font-weight:bold;margin:24px 0 8px}.row{display:flex;gap:10px}.input{min-width:0;flex:1;padding:15px;border:1px solid #d8dfeb;border-radius:13px;font-size:15px;outline:0}.input:focus{border-color:#1877f2;box-shadow:0 0 0 3px #1877f21a}.btn{border:0;background:#1877f2;color:#fff;border-radius:13px;padding:0 20px;font-weight:bold;font-size:15px;cursor:pointer}.btn:disabled{opacity:.6}.loading{display:none;color:#1877f2;font-weight:bold;margin-top:18px}.result{display:none;margin-top:20px;border-radius:16px;padding:20px;background:#f4f8ff}.result.show{display:block}.result.error{background:#fff5f5;color:#9c2828}.title{font-weight:bold;margin-bottom:10px}.idrow{display:flex;gap:8px}.id{flex:1;background:#fff;border:1px solid #d9e1ee;border-radius:12px;padding:14px;font-size:20px;font-weight:800;word-break:break-all}.copy{border:0;border-radius:12px;padding:0 16px;background:#172033;color:#fff;font-weight:bold}.meta{font-size:13px;color:#7b8495;margin-top:12px;line-height:1.5}.note{font-size:12px;color:#8992a2;margin-top:22px;line-height:1.5}@media(max-width:520px){.row{flex-direction:column}.btn{height:52px}.card{padding:22px}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Find a Facebook numeric ID from a public Facebook URL." />
+  <title>Facebook ID Finder</title>
 </head>
 <body>
-<main class="card">
-  <div class="brand">
-    <div class="fb">f</div>
-    <div><h1>Facebook ID Finder</h1><span>Username / URL → Numeric ID</span></div>
-  </div>
-  <div class="desc">Masukkan URL atau username Facebook. Tool akan mencoba menemukan Facebook ID numeriknya dari informasi publik yang dapat diakses.</div>
-
-  <label class="label" for="input">URL / Username Facebook</label>
-  <div class="row">
-    <input id="input" class="input" placeholder="https://www.facebook.com/putri.bhogell.777" autocomplete="off">
-    <button id="btn" class="btn" onclick="lookup()">CARI ID</button>
-  </div>
-
-  <div id="loading" class="loading">Sedang mencari...</div>
-  <div id="result" class="result"></div>
-
-  <div class="note">
-    Tool ini hanya membaca informasi publik. Facebook dapat membatasi akses otomatis,
-    sehingga username tertentu mungkin tidak dapat di-resolve.
-  </div>
-</main>
-<script>
-const $=id=>document.getElementById(id);
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-async function lookup(){
-  const input=$('input').value.trim(), btn=$('btn'), load=$('loading'), box=$('result');
-  box.className='result'; box.innerHTML='';
-  if(!input){showError('Masukkan URL atau username Facebook.');return}
-  btn.disabled=true;load.style.display='block';
-  try{
-    const r=await fetch('/api/facebook?input='+encodeURIComponent(input),{headers:{'Accept':'application/json'}});
-    const raw=await r.text();
-    let d;
-    try{d=JSON.parse(raw)}catch(_){throw new Error(`Server mengembalikan response tidak valid (HTTP ${r.status}).`)}
-    if(!r.ok||!d.success){
-      const message=typeof d.error==='string'?d.error:(d.error?JSON.stringify(d.error):'ID tidak ditemukan.');
-      throw new Error(message);
-    }
-    const x=d.data||{};
-    if(!x.fbid) throw new Error('Profil ditemukan, tetapi Facebook tidak memberikan ID numerik pada halaman yang dapat dibaca.');
-    box.className='result show';
-    box.innerHTML=`<div class="title">Facebook ID ditemukan</div>
-      <div class="idrow"><div class="id" id="fbid">${esc(x.fbid)}</div><button class="copy" onclick="copyId()">COPY</button></div>
-      <div class="meta">${x.title?'Nama: '+esc(x.title):''}${x.username?'<br>Username: '+esc(x.username):''}</div>`;
-  }catch(e){showError(e.message)}
-  finally{btn.disabled=false;load.style.display='none'}
-}
-function showError(msg){$('result').className='result show error';$('result').innerHTML='<div class="title">Tidak berhasil</div><div>'+esc(msg)+'</div>'}
-async function copyId(){const v=$('fbid').textContent;try{await navigator.clipboard.writeText(v);alert('ID berhasil disalin.')}catch(e){prompt('Salin ID:',v)}}
-$('input').addEventListener('keydown',e=>{if(e.key==='Enter')lookup()});
-</script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

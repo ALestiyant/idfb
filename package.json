@@ -1,8 +1,17 @@
 {
-  "name": "facebook-id-finder",
-  "version": "4.0.0",
+  "name": "facebook-id-finder-apify-v1",
   "private": true,
-  "license": "MIT",
-  "description": "Facebook ID Finder using only publicly accessible profile metadata",
-  "engines": { "node": ">=20" }
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vite": "^7.1.7",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {}
 }
