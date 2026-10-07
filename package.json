@@ -1,0 +1,8 @@
+{
+  "name":"facebook-id-finder",
+  "version":"1.0.0",
+  "private":true,
+  "license":"MIT",
+  "description":"Facebook ID Finder based on public metadata",
+  "scripts":{"start":"node server.js"}
+}

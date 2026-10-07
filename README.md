@@ -1,22 +1,28 @@
 # Facebook ID Finder
 
-Website sederhana untuk mencoba menemukan Facebook ID dari URL profil.
+Versi sederhana untuk Vercel. Struktur resolver mengikuti pendekatan open-source
+`refatbd/info-facebook-user` (MIT), tetapi UI dan endpoint dibuat ulang untuk proyek ini.
 
-## Deploy ke Vercel
+## File
+- index.html
+- api/facebook.js
+- vercel.json
+- package.json
 
-1. Upload folder ini ke GitHub.
-2. Buka Vercel dan import repository tersebut.
-3. Deploy.
-4. Buka URL Vercel yang diberikan.
+## Deploy
+Upload seluruh file ke GitHub, lalu import repository ke Vercel.
+Tidak perlu Build Command dan tidak perlu Environment Variable.
 
-## Penting
-
-Facebook membatasi akses otomatis dan metode/API yang tersedia dapat berubah. Untuk URL
-`profile.php?id=123456`, website dapat membaca ID langsung dari URL. Untuk URL username,
-endpoint mencoba membaca HTML publik Facebook, tetapi hasilnya tidak dijamin.
+## Endpoint
+GET /facebook?input=USERNAME_OR_URL
 
 Contoh:
-https://www.facebook.com/profile.php?id=100021190395594
+`/facebook?input=putri.bhogell.777`
 
-Untuk username:
-https://www.facebook.com/putri.bhogell.777
+## Catatan
+Facebook dapat memblokir atau mengubah halaman publiknya. Resolver hanya mengembalikan
+ID jika ID tersebut benar-benar ditemukan pada response yang diterima server.
+Tidak ada ID yang ditebak.
+
+Referensi open-source:
+https://github.com/refatbd/info-facebook-user
