@@ -39,7 +39,7 @@ async function lookup(){
   if(!input){showError('Masukkan URL atau username Facebook.');return}
   btn.disabled=true;load.style.display='block';
   try{
-    const r=await fetch('/facebook?input='+encodeURIComponent(input),{headers:{'Accept':'application/json'}});
+    const r=await fetch('/api/facebook?input='+encodeURIComponent(input),{headers:{'Accept':'application/json'}});
     const raw=await r.text();
     let d;
     try{d=JSON.parse(raw)}catch(_){throw new Error(`Server mengembalikan response tidak valid (HTTP ${r.status}).`)}

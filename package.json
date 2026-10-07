@@ -1,10 +1,8 @@
 {
   "name": "facebook-id-finder",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "private": true,
   "license": "MIT",
-  "description": "Facebook ID Finder based on publicly accessible metadata",
-  "engines": {
-    "node": ">=20"
-  }
+  "description": "Facebook ID Finder using only publicly accessible profile metadata",
+  "engines": { "node": ">=20" }
 }

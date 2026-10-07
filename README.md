@@ -1,18 +1,20 @@
-# Facebook ID Finder v3
+# Facebook ID Finder v4
 
-Tool sederhana untuk mencoba menemukan Facebook Numeric ID dari URL atau username menggunakan metadata publik yang dapat diakses tanpa login.
+Simple Vercel-ready static frontend + serverless API.
 
-## Deploy ke Vercel
+## Important limitation
 
-1. Upload folder ini ke repository GitHub.
-2. Import repository tersebut ke Vercel.
-3. Framework Preset: **Other** (atau biarkan Vercel mendeteksi sebagai static site).
-4. **Build Command:** kosongkan. Proyek ini tidak membutuhkan `npm run build`.
-5. **Output Directory:** kosongkan.
+A username such as `facebook.com/namauser` does not reliably expose a numeric ID to an unauthenticated server. Facebook may return HTTP 400/403/429, a login wall, or HTML without the ID. This project does not log in to Facebook or bypass access controls.
+
+The API tries the public `www`, `m`, and `mbasic` Facebook hosts and extracts an ID only when Facebook actually exposes one in public metadata. If the input already contains a numeric ID (`profile.php?id=...`, `/groups/123...`, or a raw number), it is returned directly without requesting Facebook.
+
+## Deploy to Vercel
+
+1. Upload this folder to GitHub.
+2. Import the repository into Vercel.
+3. Framework preset: **Other**.
+4. Build command: leave empty.
+5. Output directory: leave empty.
 6. Deploy.
 
-API tersedia melalui `/facebook?input=USERNAME` dan diarahkan ke `/api/facebook` oleh `vercel.json`.
-
-## Catatan penting
-
-Facebook dapat memblokir request otomatis, mengarahkan ke login/checkpoint, atau tidak mengirim Numeric ID di halaman publik. Dalam kondisi tersebut aplikasi akan menampilkan alasan yang lebih jelas daripada `[object Object]`; aplikasi tidak melakukan login, bypass CAPTCHA, atau bypass pembatasan akses Facebook.
+No `npm install` or `npm run build` is required.
